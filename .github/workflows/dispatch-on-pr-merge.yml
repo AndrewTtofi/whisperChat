@@ -1,0 +1,18 @@
+name: Dispatch on PR Merge
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          repository: $({ secrets.TRIGGER_REPO})
+          event-type: pr-merged
